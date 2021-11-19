@@ -1,6 +1,27 @@
 #include <iostream>
 
 enum class Month { jan = 1, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec };
+
+const char* getMonthName(enum Month month)              // Function for getting month name
+{
+   switch (month) 
+   {
+      case Month::jan: return "January";
+      case Month::feb: return "February";
+      case Month::mar: return "March";
+      case Month::apr: return "April";      
+      case Month::may: return "May";
+      case Month::jun: return "June";   
+      case Month::jul: return "July";
+      case Month::aug: return "August";
+      case Month::sep: return "September";
+      case Month::oct: return "October";      
+      case Month::nov: return "November";
+      case Month::dec: return "December";    
+      break;
+   }
+}
+
 class Date{
     int _day;
     Month _month;
@@ -11,8 +32,14 @@ class Date{
     : _day{day},
       _month{month},
       _year{year}{}
+      
+    ~Date(){};
 
     int Get_day(){
+        return _day;
+    }
+
+    int Get_day() const{
         return _day;
     }
 
@@ -20,7 +47,15 @@ class Date{
         return _month;
     }
 
+    Month Get_month() const{
+        return _month;
+    }
+
     int Get_year(){
+        return _year;
+    }
+
+    int Get_year() const{
         return _year;
     }
 
@@ -32,6 +67,20 @@ class Date{
 	}    
 
     int is_leap() { return _year % 4 == 0 && (_year % 100 != 0 || _year % 400 == 0); }
+
+    friend bool operator==(const Date& lhs, const Date& rhs){
+        return lhs.Get_day()==rhs.Get_day() && lhs.Get_month()==rhs.Get_month() && lhs.Get_month()==rhs.Get_month();
+    }
+
+    friend bool operator!=(const Date& lhs, const Date& rhs){
+        return !(lhs == rhs);
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Date& d){
+        os << d.Get_day() << "/" << getMonthName(d.Get_month())<< "/" << d.Get_year() << std::endl;
+        return os;
+    }
+
     void add_one_day();
 
     void add_days(unsigned int n){
@@ -57,31 +106,6 @@ void Date::add_one_day(){
     }
 }
 
-// Function for getting month name //
-const char* getMonthName(enum Month month) 
-{
-   switch (month) 
-   {
-      case Month::jan: return "January";
-      case Month::feb: return "February";
-      case Month::mar: return "March";
-      case Month::apr: return "April";      
-      case Month::may: return "May";
-      case Month::jun: return "June";   
-      case Month::jul: return "July";
-      case Month::aug: return "August";
-      case Month::sep: return "September";
-      case Month::oct: return "October";      
-      case Month::nov: return "November";
-      case Month::dec: return "December";    
-      break;
-   }
-}
-
-// Function for printing the date //
-void PrintMyDate(Date d){
-    std::cout << d.Get_day() << "/" << getMonthName(d.Get_month())<< "/" << d.Get_year() << std::endl;
-}
 
 // main() of the program //
 int main() {
@@ -90,31 +114,51 @@ int main() {
 
     std::cout<<"\n";
     std::cout << "Default date" << std::endl;
-	PrintMyDate(d);
+	std::cout<< d;
 
     std::cout<<"\n";
 	std::cout << "Adding 20 days" << std::endl;
 	d.add_days(20);
-	PrintMyDate(d);
+	std::cout<< d;
 
     std::cout<<"\n";
     std::cout << "New default date" << std::endl;
-	PrintMyDate(d1);
+	std::cout<< d1;
 
     std::cout<<"\n";
     std::cout << "Adding 28 days" << std::endl;
 	d1.add_days(28);
-	PrintMyDate(d1);
+	std::cout<< d1;
 
     std::cout<<"\n";
     std::cout << "Adding 1 day" << std::endl;
 	d1.add_days(1);
-	PrintMyDate(d1);
+	std::cout<< d1;
 
     std::cout<<"\n";
     std::cout << "Adding 365 day" << std::endl;
 	d1.add_days(365);
-	PrintMyDate(d1);
+	std::cout<< d1;
 
+    std::cout<<"\n";
+    std::cout << "Date1" << std::endl;
+	std::cout<< d1;
+
+    std::cout<<"\n";
+    std::cout << "Date2" << std::endl;
+	std::cout<< d; 
+
+    std::cout<<"\n";
+    std::cout << "Checking if Date1 = Date2" << std::endl;
+	std::cout<< (d1==d)<< std::endl;    
+
+    std::cout<<"\n";
+    std::cout << "Checking if Date1 != Date2" << std::endl;
+	std::cout<< (d1!=d) << std::endl;  
+
+    std::cout<<"\n";
+    std::cout << "Checking if Date1 year = "<< d1.Get_year() <<" is leap" << std::endl;
+	std::cout<< (d1.is_leap()) << std::endl; 
+
+return 0;
 }
-
